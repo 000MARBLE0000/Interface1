@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voice Test</title>
+  </head>
+  <body>
+    <button id="startButton">Start</button>
+    <button id="stopButton">Stop</button>
+    <div id="response"></div>
+
+    <script>
+      const startButton = document.getElementById('startButton');
+      const stopButton = document.getElementById('stopButton');
+      const responseDiv = document.getElementById('response');
+
+      let recognition;
+      let lastQuestion = '';
+
+      startButton.addEventListener('click', () => {
+        if (recognition) {
+          recognition.stop();
+        }
+
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = event => {
+          let transcript = '';
+
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              transcript += event.results[i][0].transcript;
+            }
+          }
+
+          responseDiv.innerText = transcript;
+          respondToQuery(transcript);
+        };
+
+        recognition.start();
+      });
+
+      stopButton.addEventListener('click', () => {
+        if (recognition) {
+          recognition.stop();
+          responseDiv.innerText = '';
+        }
+      });
+
+      function respondToQuery(query) {
+        if (query !== lastQuestion) {
+          if (query.includes('hi') || query.includes('I need your help')) {
+            speak('Hello, how can I help you?');
+          } else if (query.includes('open navigation')) {
+            openNavigation();
+          }
+          else if (query.includes('open contacts')) {
+            openContacts();
+          }
+          else if (query.includes('open settings')) {
+            openSettings();
+          }
+          else if (query.includes('emergency')) {
+            openEmergency();
+          }
+
+          lastQuestion = query;
+        }
+      }
+
+      function speak(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function openNavigation() {
+        window.location.href = '../Maps_Canvas_1/Maps_Canvas_1.html'; 
+      }
+      function openContacts() {
+        window.location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html'; 
+      }
+      function openSettings() {
+        window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html'; 
+      }
+      function openEmergency() {
+        window.location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html'; 
+      }
+    </script>
+  </body>
+</html>

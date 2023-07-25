@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exercise Page</title>
+  <link rel="stylesheet" href="Settings_Canvas_3.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <button class="back-button" onclick="goBack()">Back</button>
+      <h1>Exercise Page</h1>
+    </div>
+    <div class="content">
+      <ul class="settings-list">
+        <li><a href="#" class="settings-button" data-target="reason">Why Do I Need Exercise?</a></li>
+        <li><a href="#" class="settings-button" data-target="how">How Should I Exercise?</a></li>
+        <li><a href="#" class="settings-button" data-target="tips">What Should I Pay Attention To?</a></li>
+        <li><a href="#" class="settings-button" data-target="plan">What's the Suitable Exercise Plan for Me?</a></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    function goBack() {
+      window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html';
+    }
+
+    // 获取所有具有settings-button类的链接元素
+    const settingsButtons = document.querySelectorAll('.settings-button');
+    
+    // 添加点击事件监听器
+    settingsButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const target = button.getAttribute('data-target');
+
+        // 定义要打开的网页URL
+        let url;
+        if (target === 'reason') {
+          url = '../Test/Whyexercise.pdf'; // 替换为要打开的网页的URL
+        } else if (target === 'how') {
+          url = 'how.html'; // 替换为要打开的网页的URL
+        } else if (target === 'tips') {
+          url = 'tips.html'; // 替换为要打开的网页的URL
+        } else if (target === 'plan') {
+          url = '../Test/plan2.pdf'; // 替换为要打开的网页的URL
+        }
+
+        // 打开新网页
+        if (url) {
+          window.open(url, '_blank');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

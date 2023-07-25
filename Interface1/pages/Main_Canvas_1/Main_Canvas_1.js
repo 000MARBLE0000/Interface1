@@ -1,0 +1,62 @@
+function updateTime() {
+  const currentDate = new Date();
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayOfWeek = daysOfWeek[currentDate.getDay()];
+
+  document.getElementById('time').textContent = `${hours}:${minutes}`;
+  document.getElementById('date').textContent = `${year}-${month}-${day}`;
+  document.getElementById('day').textContent = dayOfWeek;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+function onClick_0() {
+  location.href = '../VoiceInteraction_Canvas_1/VoiceInteraction_Canvas_1.html';
+}
+
+function onClick() {
+  location.href = '../Maps_Canvas_1/Maps_Canvas_1.html';
+}
+
+function onClick_1() {
+  location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html';
+}
+
+function onClick_2() {
+  location.href = '../Settings_Canvas_1/Settings_Canvas_1.html';
+}
+
+function onClick_3() {
+  location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html';
+}
+
+function onClick_4() {
+  location.href = '../Heart_Rate_Canvas_1/Heart_Rate_Canvas_1.html';
+}
+
+function onClick_5() {
+  location.href = '../Posture_Canvas_1/Posture_Canvas_1.html';
+}
+
+function onClick_6() {
+  location.href = '../Navigation_Canvas_1/Navigation_Canvas_1.html';
+}
+
+
+// 定义一个函数，每秒钟执行一次，来改变BPM
+setInterval(function() {
+    // 获取span元素
+    const bpmSpan = document.getElementById('bpm');
+
+    // 检查心率并进行页面跳转
+    if (bpm > 131) {
+        window.location.href = "../Heart_Rate_Canvas_1/Heart_Rate_Canvas_1.html";
+    }
+}, 1000); // 1000毫秒 = 1秒

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>codefun</title>
+    <link rel="stylesheet" href="../../index.css" />
+    <link rel="stylesheet" href="./Contacts_Canvas_1.css" />
+  </head>
+  <body>
+    <div class="flex-col page space-y-11">
+      <div class="flex-row justify-between group">
+        <div class="flex-row space-x-152">
+          <div class="flex-row items-start self-start group_2 space-x-62">
+            <span id="time" class="text"></span>
+            <div class="group_3">
+              <span id="date" class="font_1 text_2"></span>
+              <span id="day" class="font_1 text_3"></span>
+            </div>
+          </div>
+  
+          <div id="videoContainer" style="display: flex;">
+            <div>
+              <img class="image" id="image" src="../Test/Robot.png" alt="Image" />
+              <video
+                id="videoPlayer"
+                style="width: 9rem; height: 9rem;"
+                src="../Test/Carton2.mp4"
+                loop
+              ></video>
+            </div>
+            <div id="response" style="margin-left: 20px;"></div>
+          </div>
+          
+        </div>
+      </div>
+      <div id="contactWindow" class="contacts-window" style="display: block;">
+
+        <div class="buttons">
+          <button id="addContact" class="button" onclick="handleAdd()">Add Contact</button>
+          <button id="deleteContact" class="button" onclick="handleDelete()">Delete Contact</button>
+          <button id="updateContact" class="button" onclick="handleUpdate()">Update Contact</button>
+        </div>
+        
+        <div class="contact-card">
+          <h2 class="contact-name" onclick="toggleDetails(1)">Friend 1</h2>
+          <button class="delete-contact-button" style="display: none;">X</button>
+          <p class="contact-phone" onclick="callPhone('123-456-7890')">Phone: <a href="tel:123-456-7890">123-456-7890</a></p>
+          <div id="contact1Details" class="contact-details" style="display: none;">
+            <p>Email: friend1@example.com</p>
+            <p>Address: 123 Street, City, Country</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <h2 class="contact-name" onclick="toggleDetails(2)">Friend 2</h2>
+          <button class="delete-contact-button" style="display: none;">X</button>
+          <p class="contact-phone" onclick="callPhone('234-567-8901')">Phone: <a href="tel:234-567-8901">234-567-8901</a></p>
+          <div id="contact2Details" class="contact-details" style="display: none;">
+            <p>Email: friend2@example.com</p>
+            <p>Address: 456 Avenue, City, Country</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <h2 class="contact-name" onclick="toggleDetails(3)">Friend 3</h2>
+          <button class="delete-contact-button" style="display: none;">X</button>
+          <p class="contact-phone" onclick="callPhone('345-678-9012')">Phone: <a href="tel:345-678-9012">345-678-9012</a></p>
+          <div id="contact3Details" class="contact-details" style="display: none;">
+            <p>Email: friend3@example.com</p>
+            <p>Address: 789 Boulevard, City, Country</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex-col justify-start relative section">
+        <div class="flex-col justify-start items-center section_2">
+          <div class="flex-row">
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855614582954398667.png"
+                onclick="onClick()"
+              />
+              <span class="font_1">Home</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/e79be9c05ed5fae4c0781ecf42eff06b.png"
+                onclick="onClick_1()"
+              />
+              <span class="font_1">Maps</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7ea942857418c69db3804df335592721.png"
+              />
+              <span class="font_1">Contacts</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855619889582289091.png"
+                onclick="onClick_2()"
+              />
+              <span class="font_1">Settings</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/2d84f33acadd50ed418b1f0796873488.png"
+                onclick="onClick_3()"
+              />
+              <span class="font_1">Emergency</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const image = document.getElementById('image');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const responseDiv = document.getElementById('response');
+    
+      let recognition;
+      let lastQuestion = '';
+    
+      image.addEventListener('click', () => {
+        image.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.play();
+    
+        if (recognition) {
+          recognition.stop();
+        }
+    
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+    
+        recognition.onresult = event => {
+          let transcript = '';
+    
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              transcript += event.results[i][0].transcript;
+            }
+          }
+    
+          responseDiv.innerText = transcript;
+          respondToQuery(transcript);
+        };
+    
+        recognition.start();
+      });
+    
+      videoPlayer.addEventListener('click', () => {
+        image.style.display = 'block';
+        videoPlayer.style.display = 'none';
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
+    
+        if (recognition) {
+          recognition.stop();
+          responseDiv.innerText = '';
+        }
+      });
+    
+      function respondToQuery(query) {
+        if (query !== lastQuestion) {
+            if (query.includes('hi') || query.includes('I need your help')) {
+              speak('Hello, how can I help you?');
+            } else if (query.includes('open navigation')) {
+              openNavigation();
+            }
+            else if (query.includes('open contacts')) {
+              openContacts();
+            }
+            else if (query.includes('open settings')) {
+              openSettings();
+            }
+            else if (query.includes('emergency')) {
+              openEmergency();
+            }
+  
+            lastQuestion = query;
+          }
+      }
+    
+      function speak(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        window.speechSynthesis.speak(utterance);   
+      }
+  
+      function openNavigation() {
+          window.location.href = '../Maps_Canvas_1/Maps_Canvas_1.html'; 
+        }
+        function openContacts() {
+          window.location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html'; 
+        }
+        function openSettings() {
+          window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html'; 
+        }
+        function openEmergency() {
+          window.location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html'; 
+        }
+      // Other functions
+    </script>
+  </body>
+
+  <div id="confirm-delete-modal" style="display: none;">
+    <p>Are you sure you want to delete <span id="delete-name"></span>?</p>
+    <button id="confirm-delete-button" onclick="deleteContact(this)">Yes</button>
+    <button id="cancel-delete-button">No</button>
+  </div>
+  
+  
+  <div id="addContactModal" class="modal">
+    <div class="modal-content">
+      <span id="closeAddContact">&times;</span>
+      <h2>Add New Contact</h2>
+      <form id="newContactForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="phone">Phone:</label><br>
+        <input type="text" id="phone" name="phone"><br>
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br>
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address"><br>
+        <input class="button" type="submit" value="Add">
+        <button id="back" class="button" onclick="handleBack(event)">Back</button>
+      </form>
+    </div>
+  </div>
+  
+  <script type="text/javascript" src="./Contacts_Canvas_1.js"></script>
+</html>

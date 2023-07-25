@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>音量控制</title>
+</head>
+<body>
+  <h1>音量控制</h1>
+
+  <button onclick="increaseVolume()">增加音量</button>
+  <button onclick="decreaseVolume()">减小音量</button>
+
+  <script>
+    function increaseVolume() {
+      try {
+        androidVolumeUp();
+      } catch (error) {
+        console.error('无法增加音量:', error);
+      }
+    }
+
+    function decreaseVolume() {
+      try {
+        androidVolumeDown();
+      } catch (error) {
+        console.error('无法减小音量:', error);
+      }
+    }
+
+    function androidVolumeUp() {
+      if (typeof Android !== 'undefined' && typeof Android.volumeUp === 'function') {
+        Android.volumeUp();
+      } else {
+        console.warn('无法访问Android.volumeUp()方法');
+      }
+    }
+
+    function androidVolumeDown() {
+      if (typeof Android !== 'undefined' && typeof Android.volumeDown === 'function') {
+        Android.volumeDown();
+      } else {
+        console.warn('无法访问Android.volumeDown()方法');
+      }
+    }
+  </script>
+</body>
+</html>

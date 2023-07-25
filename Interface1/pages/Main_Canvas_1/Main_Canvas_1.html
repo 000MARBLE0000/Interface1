@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>codefun</title>
+  <link rel="stylesheet" href="../../index.css" />
+  <link rel="stylesheet" href="./Main_Canvas_1.css" />
+  <script type="text/javascript" src="./Main_Canvas_1.js"></script>
+  <style>
+    /* 辅助功能窗口样式 */
+    .accessibility-menu-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: rgb(2, 2, 2);
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      z-index: 9999;
+    }
+
+    .accessibility-window {
+      position: fixed;
+      bottom: 150px;
+      right: 20px;
+      width: 300px;
+      height: auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-family: Arial, sans-serif;
+      display: none;
+      z-index: 9999;
+      font-size: 30px;
+    }
+
+    .accessibility-window.show {
+      display: block;
+    }
+
+    .accessibility-window button {
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 20px;
+  border: none;
+  background-color: #eaeaea;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  text-align: center; /* 将文本水平居中 */
+}
+
+
+    .contrast {
+      filter: invert(100%);
+    }
+
+    .highlight-link {
+      filter: invert(100%);
+    }
+
+    .bigger-text-1 {
+      font-size: 3vh;
+    }
+
+    .bigger-text-2 {
+      font-size: 5vh;
+    }
+
+    .bigger-text-3 {
+      font-size: 7vh;
+    }
+
+    .text-spacing-1 {
+      letter-spacing: normal;
+    }
+
+    .text-spacing-2 {
+      letter-spacing: 2px;
+    }
+
+    .text-spacing-3 {
+      letter-spacing: 4px;
+    }
+
+    .hide-images img {
+      display: none;
+    }
+
+    .dyslexia-friendly {
+      font-family: OpenDyslexic, Arial, sans-serif;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="flex-col page">
+    <div class="flex-row justify-between group">
+      <div class="flex-row space-x-152">
+        <div class="flex-row items-start self-start group_2 space-x-62">
+          <span id="time" class="text"></span>
+          <div class="group_3">
+            <span id="date" class="font_1 text_2"></span>
+            <span id="day" class="font_1 text_3"></span>
+          </div>
+        </div>
+
+        <div id="videoContainer" style="display: flex;">
+          <div>
+            <img class="image" id="image" src="../Test/Robot.png" alt="Image" />
+            <video
+            id="videoPlayer"
+            style="width: 9rem; height: 9rem;"
+            src="../Test/Carton2.mp4"
+            loop
+            muted
+        ></video>
+        
+          </div>
+          <div id="response" style="margin-left: 20px;"></div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="flex-col justify-start relative section">
+      <div class="flex-col justify-start items-center section_2">
+        <div class="flex-row">
+          <div class="flex-col items-center equal-division-item_4 space-y-16">
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855614582954398667.png"
+            />
+            <span class="font_1">Home</span>
+          </div>
+          <div class="flex-col items-center equal-division-item_4 space-y-16">
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7b5c4482ef501928a77617613da4f750.png"
+              onclick="onClick()"
+            />
+            <span class="font_1">Maps</span>
+          </div>
+          <div class="flex-col items-center equal-division-item_4 space-y-16">
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7ea942857418c69db3804df335592721.png"
+              onclick="onClick_1()"
+            />
+            <span class="font_1">Contacts</span>
+          </div>
+          <div class="flex-col items-center equal-division-item_4 space-y-16">
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855619889582289091.png"
+              onclick="onClick_2()"
+            />
+            <span class="font_1">Settings</span>
+          </div>
+          <div class="flex-col items-center equal-division-item_4 space-y-16">
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/2d84f33acadd50ed418b1f0796873488.png"
+              onclick="onClick_3()"
+            />
+            <span class="font_1">Emergency</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex-row justify-between pos">
+        <div class="flex-col relative equal-division-item space-y-50" onclick="onClick_4()">
+          <span class="self-center font_1">Heart Rate</span>
+          <div class="flex-col items-center space-y-32">
+            <img
+              class="image_3"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/8f2e79b46ae0faa9777c3c55e7989343.png"
+            />
+            <span id="bpm" class="font_1 text_4">135 bpm</span>
+
+          </div>
+        </div>
+        <div class="flex-col relative equal-division-item_2 space-y-50" onclick="onClick_5()">
+          <span class="self-center font_1">Posture</span>
+          <div class="flex-col items-center space-y-30">
+            <img
+              id="image_pos"
+              class="image_3"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855612517950723697.png"
+            />
+            <span id="posture" class="font_1 text_4">Standard</span>
+
+            <div id="warning" class="font_warning text_4"></div>
+          </div>
+        </div>
+        <div class="flex-col equal-division-item_3 space-y-44" onclick="onClick_6()">
+          <span class="self-center font_2">Navigation</span>
+          <div class="flex-col space-y-26">
+            <img
+              class="self-center image_3 image_4"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/d9f16047af03fc11dce9ad0d312c50d7.png"
+            />
+            <div class="flex-col items-center space-y-8">
+              <span class="font_3">Turn right after 180 meters</span>
+              <span id="speed" class="font_3">Speed: 0.8 m/s </span>
+              <span id="steps" class="font_3" id="stepDisplay_main">Step count: </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 辅助功能窗口 -->
+  <div class="accessibility-menu-button" onclick="toggleAccessibilityWindow()">+</div>
+
+  <div class="accessibility-window" id="accessibilityWindow">
+    <button onclick="toggleContrast()">Contrast</button>
+    <button onclick="toggleBiggerText()">Bigger Text</button>
+    <button onclick="toggleTextSpacing()">Text Spacing</button>
+    <button onclick="toggleHideImages()">Hide Images</button>
+    <button onclick="toggleDyslexiaFriendly()">Dyslexia Friendly</button>
+  </div>
+
+  <script>
+    const accessibilityWindow = document.getElementById('accessibilityWindow');
+    const accessibilityMenuButton = document.querySelector('.accessibility-menu-button');
+
+    function toggleAccessibilityWindow() {
+      accessibilityWindow.classList.toggle('show');
+    }
+
+    function toggleContrast() {
+      document.documentElement.classList.toggle('contrast');
+      const button = document.querySelector('#accessibilityWindow button:nth-child(1)');
+      button.textContent = document.documentElement.classList.contains('contrast') ? 'Invert Colors' : 'Contrast';
+    }
+
+
+    function toggleBiggerText() {
+      const biggerTextClasses = ['bigger-text-1', 'bigger-text-2', 'bigger-text-3'];
+      const biggerTextButton = document.querySelector('#accessibilityWindow button:nth-child(2)');
+      const currentBiggerTextIndex = biggerTextClasses.findIndex(cls => document.documentElement.classList.contains(cls));
+      const nextBiggerTextIndex = (currentBiggerTextIndex + 1) % biggerTextClasses.length;
+
+      document.documentElement.classList.remove(...biggerTextClasses);
+      document.documentElement.classList.add(biggerTextClasses[nextBiggerTextIndex]);
+      biggerTextButton.textContent = `Bigger Text (${nextBiggerTextIndex + 1})`;
+    }
+
+    function toggleTextSpacing() {
+      const textSpacingClasses = ['text-spacing-1', 'text-spacing-2', 'text-spacing-3'];
+      const textSpacingButton = document.querySelector('#accessibilityWindow button:nth-child(3)');
+      const currentTextSpacingIndex = textSpacingClasses.findIndex(cls => document.documentElement.classList.contains(cls));
+      const nextTextSpacingIndex = (currentTextSpacingIndex + 1) % textSpacingClasses.length;
+
+      document.documentElement.classList.remove(...textSpacingClasses);
+      document.documentElement.classList.add(textSpacingClasses[nextTextSpacingIndex]);
+      textSpacingButton.textContent = `Text Spacing (${nextTextSpacingIndex + 1})`;
+    }
+
+    function toggleHideImages() {
+      document.documentElement.classList.toggle('hide-images');
+      const button = document.querySelector('#accessibilityWindow button:nth-child(4)');
+      button.textContent = document.documentElement.classList.contains('hide-images') ? 'Show Images' : 'Hide Images';
+    }
+
+    function toggleDyslexiaFriendly() {
+  document.documentElement.classList.toggle('dyslexia-friendly');
+  const button = document.querySelector('#accessibilityWindow button:nth-child(5)');
+  button.textContent = document.documentElement.classList.contains('dyslexia-friendly') ? 'Remove Dyslexia Friendly' : 'Dyslexia Friendly';
+  
+  // 根据是否启用Dyslexia Friendly设置页面字体
+  if (document.documentElement.classList.contains('dyslexia-friendly')) {
+    setDyslexiaFriendlyFonts();
+  } else {
+    resetFonts();
+  }
+}
+
+function setDyslexiaFriendlyFonts() {
+  const elements = document.querySelectorAll('body, h1, h2, h3, h4, h5, h6, p, span, div, li');
+  elements.forEach(element => {
+    element.style.fontFamily = "DyslexiaFriendlyFont, Arial, sans-serif";
+  });
+}
+
+function resetFonts() {
+  const elements = document.querySelectorAll('body, h1, h2, h3, h4, h5, h6, p, span, div, li');
+  elements.forEach(element => {
+    element.style.fontFamily = "Times New Roman, Arial, sans-serif"; // 恢复默认字体
+  });
+}
+
+  </script>
+  
+  <script>
+    const image = document.getElementById('image');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const responseDiv = document.getElementById('response');
+  
+    let recognition;
+    let lastQuestion = '';
+  
+    let isAnswering = false;
+    let isUsing = false;
+  
+    image.addEventListener('click', () => {
+      isUsing = true;
+      image.style.display = 'none';
+      videoPlayer.style.display = 'block';
+      videoPlayer.play();
+  
+      if (recognition) {
+        recognition.stop();
+      }
+  
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+  
+      recognition.onresult = event => {
+        let transcript = '';
+  
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            transcript += event.results[i][0].transcript;
+          }
+        }
+  
+        responseDiv.innerText = transcript;
+        respondToQuery(transcript);
+      };
+  
+      recognition.onend = () => {
+        if (!isAnswering && isUsing==true) {
+          recognition.start();
+        }
+      };
+  
+      if (!isAnswering && isUsing==true) {
+        recognition.start();
+      }
+    });
+  
+    videoPlayer.addEventListener('click', () => {
+      isUsing = false;
+      image.style.display = 'block';
+      videoPlayer.style.display = 'none';
+      videoPlayer.pause();
+      videoPlayer.currentTime = 0;
+  
+      if (recognition) {
+        recognition.stop();
+        responseDiv.innerText = '';
+      }
+    });
+  
+    function respondToQuery(query) {
+      if (query !== lastQuestion) {
+        if (query.includes('I need your help')) {
+          isAnswering = true;
+          speak('Hello, how can I help you?', () => {
+            isAnswering = false;
+            recognition.start();
+          });
+        } else if (query.includes('open navigation')) {
+          openNavigation();
+        } else if (query.includes('open contacts')) {
+          openContacts();
+        } else if (query.includes('open settings')) {
+          openSettings();
+        } else if (query.includes('emergency')) {
+          openEmergency();
+        }
+  
+        lastQuestion = query;
+      }
+      // 检查步数并播报
+    }
+  
+    function speak(message, callback) {
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.onend = callback;
+      window.speechSynthesis.speak(utterance);
+    }
+  
+    function openNavigation() {
+      window.location.href = '../Maps_Canvas_1/Maps_Canvas_1.html';
+    }
+    function openContacts() {
+      window.location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html';
+    }
+    function openSettings() {
+      window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html';
+    }
+    function openEmergency() {
+      window.location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html';
+    }
+    // Other functions
+  </script>
+  
+  
+<script>
+function updateHeartRate() {
+  fetch('http://192.168.1.131:8000/ros/api/user/heart_rate/data/')
+    .then(response => response.json())
+    .then(data => {
+      const bpm = data.data;
+      const bpmSpan = document.getElementById('bpm');
+      bpmSpan.textContent = bpm + ' bpm';
+      const warningDiv = document.getElementById('warning');
+      if (bpm > 131) {
+        warningDiv.innerHTML = "Your heart rate is abnormal.<br> <br>Please stop moving and assess your condition.";
+      } else {
+        warningDiv.innerHTML = "";
+      }
+
+      if (bpm > 164) {
+        window.location.href = "../Emergency_Canvas_1/Emergency_Canvas_1.html";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+setInterval(updateHeartRate, 2000);
+</script>
+<script>
+  function fetchData() {
+    fetch('http://192.168.1.131:8000/ros/api/posture/')
+      .then(response => response.json())
+      .then(data => {
+        const postureText = data.data; // 假设数据中的文本字段为 "data"
+        const postureElement = document.getElementById('posture');
+        postureElement.textContent = postureText;
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+  
+  // 每秒更新数据
+  setInterval(fetchData, 5000);
+</script>
+
+<script>
+function updateStepCount() {
+  fetch('http://192.168.1.131:8000/ros/api/user/imu/steps/')
+    .then(response => response.json())
+    .then(data => {
+      const stepsText = data.data;
+      const stepsSpan = document.getElementById('steps');
+      stepsSpan.textContent = 'Step Count: ' + stepsText;
+
+      var message1 = "";
+      switch (stepsText) {
+        case 2:
+          message1 = "Your walk has begun, keep going!";
+          break;
+        case 100:
+          message1 = "You've walked one hundred steps, keep going!";
+          break;
+        case 200:
+          message1 = "You've walked two hundreds steps, keep going!";
+          break;
+        case 500:
+          message1 = "You've completed half of the goal, really great!";
+          break;
+        case 600:
+          message1 = "You should feel a bit tired, do you need to rest?";
+          break;
+        case 700:
+          message1 = "You've walked seven hundreds steps, wonderful!";
+          break;
+        case 900:
+          message1 = "You're close to the destination, really great, keep going!";
+          break;
+        case 1000:
+          message1 = "You've arrived at the destination, you've walked one thousand steps, really great!";
+          break;
+        default:
+          message1 = "";
+          return;
+      }
+
+      speak(message1);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+setInterval(updateStepCount, 500);
+
+  </script>
+
+<script>
+  let lastSpeedMessage = null;
+
+function updateSpeedAndSpeak() {
+  fetch('http://192.168.1.131:8000/ros/api/robot/odom')
+    .then(response => response.json())
+    .then(data => {
+      const speedValue = data.data.velocity.linear.toFixed(2);
+      const speedSpan = document.getElementById('speed');
+      speedSpan.textContent = 'Speed: ' + speedValue + " m/s";
+
+      let currentSpeedMessage = "";
+      switch (true) {
+        case speedValue < 0.5 && speedValue > 0.05:
+          currentSpeedMessage = "You are moving slowly.";
+          break;
+        case speedValue >= 0.5 && speedValue < 1.0:
+          currentSpeedMessage = "Your speed is moderate.";
+          break;
+        case speedValue >= 1.0:
+          currentSpeedMessage = "You are moving quickly!";
+          break;
+        default:
+          currentSpeedMessage = "";
+      }
+
+      if (currentSpeedMessage !== lastSpeedMessage) {
+        speak(currentSpeedMessage);
+        lastSpeedMessage = currentSpeedMessage;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+setInterval(updateSpeedAndSpeak, 500); // 每3秒检查速度并说话
+
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            display: flex;
+            border: 1px solid #ccc;
+            padding: 30px;
+            width: 700px;
+            justify-content: space-between;
+        }
+        .login-container img {
+            width: 250px;
+            height: 250px;
+        }
+        .input-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-container input {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 5px;
+            border: none;
+            background-color: lightblue;
+            color: white;
+            font-size: 20px;
+        }
+        .btn:hover {
+            opacity: 0.7;
+        }
+        .btn:active {
+            opacity: 1;
+        }
+        .small-btn {
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 1.5em;
+            border: none;
+            background-color: rgb(198, 232, 243);
+            color: rgb(29, 79, 92);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <img src="../Test/Robot.png" alt="logo">
+        <div class="input-container">
+            <input type="text" placeholder="Username">
+            <input type="password" placeholder="Password">
+            <button class="btn" style="background-image:url(#);">Login</button>
+            <button class="small-btn">Register</button>
+            <button class="small-btn">Forgot Password</button>
+        </div>
+    </div>
+    <script>
+        const btn = document.querySelector('.btn');
+        const smallBtns = document.querySelectorAll('.small-btn');
+        btn.addEventListener('mousedown', () => {
+            btn.style.transform = 'scale(0.95)';
+        });
+        btn.addEventListener('mouseup', () => {
+            btn.style.transform = 'scale(1)';
+        });
+        btn.addEventListener('click', () => {
+            window.location.href = '../Main_Canvas_1/Main_Canvas_1.html';
+        });
+        smallBtns.forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+
+</body>
+</html>

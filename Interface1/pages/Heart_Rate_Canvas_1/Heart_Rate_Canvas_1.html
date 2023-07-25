@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>codefun</title>
+    <link rel="stylesheet" href="../../index.css" />
+    <link rel="stylesheet" href="./Heart_Rate_Canvas_1.css" />
+    <script type="text/javascript" src="./Heart_Rate_Canvas_1.js"></script>
+  </head>
+  <body>
+    <div class="flex-col page">
+      <div class="flex-row justify-between group">
+        <div class="flex-row space-x-152">
+          <div class="flex-row items-start self-start group_2 space-x-62">
+            <span id="time" class="text"></span>
+            <div class="group_3">
+              <span id="date" class="font_1 text_2"></span>
+              <span id="day" class="font_1 text_3"></span>
+            </div>
+          </div>
+  
+          <div id="videoContainer" style="display: flex;">
+            <div>
+              <img class="image" id="image" src="../Test/Robot.png" alt="Image" />
+              <video
+                id="videoPlayer"
+                style="width: 9rem; height: 9rem;"
+                src="../Test/Carton2.mp4"
+                loop
+              ></video>
+            </div>
+            <div id="response" style="margin-left: 20px;"></div>
+          </div>
+          
+        </div>
+      </div>
+      <div class="flex-col justify-start relative section">
+        <div class="flex-col justify-start items-center section_3">
+          <div class="flex-row">
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855614582954398667.png"
+                onclick="onClick()"
+              />
+              <span class="font_1">Home</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7b5c4482ef501928a77617613da4f750.png"
+                onclick="onClick_1()"
+              />
+              <span class="font_1">Maps</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7ea942857418c69db3804df335592721.png"
+                onclick="onClick_2()"
+              />
+              <span class="font_1">Contacts</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855619889582289091.png"
+                onclick="onClick_3()"
+              />
+              <span class="font_1">Settings</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/2d84f33acadd50ed418b1f0796873488.png"
+                onclick="onClick_4()"
+              />
+              <span class="font_1">Emergency</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex-col items-center section_2 pos">
+          <span class="font_1">Heart Rate</span>
+          <img
+            class="image_3"
+            src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855612523808966044.png"
+          />
+          <span id="bpm" class="font_1 text_4">135 bpm</span>
+          
+          <div id="warning" class="font_warning text_4"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const image = document.getElementById('image');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const responseDiv = document.getElementById('response');
+    
+      let recognition;
+      let lastQuestion = '';
+    
+      image.addEventListener('click', () => {
+        image.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.play();
+    
+        if (recognition) {
+          recognition.stop();
+        }
+    
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+    
+        recognition.onresult = event => {
+          let transcript = '';
+    
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              transcript += event.results[i][0].transcript;
+            }
+          }
+    
+          responseDiv.innerText = transcript;
+          respondToQuery(transcript);
+        };
+    
+        recognition.start();
+      });
+    
+      videoPlayer.addEventListener('click', () => {
+        image.style.display = 'block';
+        videoPlayer.style.display = 'none';
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
+    
+        if (recognition) {
+          recognition.stop();
+          responseDiv.innerText = '';
+        }
+      });
+    
+      function respondToQuery(query) {
+        if (query !== lastQuestion) {
+            if (query.includes('hi') || query.includes('I need your help')) {
+              speak('Hello, how can I help you?');
+            } else if (query.includes('open navigation')) {
+              openNavigation();
+            }
+            else if (query.includes('open contacts')) {
+              openContacts();
+            }
+            else if (query.includes('open settings')) {
+              openSettings();
+            }
+            else if (query.includes('emergency')) {
+              openEmergency();
+            }
+  
+            lastQuestion = query;
+          }
+      }
+    
+      function speak(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        window.speechSynthesis.speak(utterance);   
+      }
+  
+      function openNavigation() {
+          window.location.href = '../Maps_Canvas_1/Maps_Canvas_1.html'; 
+        }
+        function openContacts() {
+          window.location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html'; 
+        }
+        function openSettings() {
+          window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html'; 
+        }
+        function openEmergency() {
+          window.location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html'; 
+        }
+      // Other functions
+    </script>
+      <script>
+
+function updateHeartRate() {
+  fetch('http://192.168.1.131:8000/ros/api/user/heart_rate/data/')
+    .then(response => response.json())
+    .then(data => {
+      const bpm = data.data;
+      const bpmSpan = document.getElementById('bpm');
+      bpmSpan.textContent = bpm + ' bpm';
+      const warningDiv = document.getElementById('warning');
+      if (bpm > 131) {
+        warningDiv.innerHTML = "Your heart rate is abnormal.<br> <br>Please stop moving and assess your condition.";
+      } else {
+        warningDiv.innerHTML = "";
+      }
+
+      if (bpm > 164) {
+        window.location.href = "../Emergency_Canvas_1/Emergency_Canvas_1.html";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+setInterval(updateHeartRate, 2000);
+</script>
+  </body>
+</html>

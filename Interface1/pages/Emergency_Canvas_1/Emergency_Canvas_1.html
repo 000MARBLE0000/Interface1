@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>codefun</title>
+    <link rel="stylesheet" href="../../index.css" />
+    <link rel="stylesheet" href="./Emergency_Canvas_1.css" />
+  </head>
+  <body>
+    <div class="flex-col page space-y-11">
+      <div class="flex-row justify-between group">
+        <div class="flex-row space-x-152">
+          <div class="flex-row items-start self-start group_2 space-x-62">
+            <span id="time" class="text"></span>
+            <div class="group_3">
+              <span id="date" class="font_1 text_2"></span>
+              <span id="day" class="font_1 text_3"></span>
+            </div>
+          </div>
+  
+          <div id="videoContainer" style="display: flex;">
+            <div>
+              <img class="image" id="image" src="../Test/Robot.png" alt="Image" />
+              <video
+                id="videoPlayer"
+                style="width: 9rem; height: 9rem;"
+                src="../Test/Carton2.mp4"
+                loop
+              ></video>
+            </div>
+            <div id="response" style="margin-left: 20px;"></div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="flex-col justify-start relative section">
+        <div class="flex-col justify-start items-center section_2">
+          <div class="flex-row">
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855614582954398667.png"
+                onclick="onClick()"
+              />
+              <span class="font_1">Home</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/e79be9c05ed5fae4c0781ecf42eff06b.png"
+                onclick="onClick_1()"
+              />
+              <span class="font_1">Maps</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/7ea942857418c69db3804df335592721.png"
+                onclick="onClick_2()"
+              />
+              <span class="font_1">Contacts</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855619889582289091.png"
+                onclick="onClick_3()"
+              />
+              <span class="font_1">Settings</span>
+            </div>
+            <div class="flex-col items-center equal-division-item space-y-16">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/2d84f33acadd50ed418b1f0796873488.png"
+              />
+              <span class="font_1">Emergency</span>
+            </div>
+          </div>
+        </div>
+        <img
+          class="image_2 pos"
+          id="emergencyButton"
+          src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855679321471812201.png"
+          alt="Emergency Button"
+        />
+        <div id="emergencyModal" class="modal">
+          <div class="modal-content">
+            <p id="emergencyText">Do you have an emergency?</p>
+            <div id="countdown">10</div>
+            <button id="noButton">No</button>
+            <button id="yesButton">Yes</button>
+            <button id="backButton" style="display:none;">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const image = document.getElementById('image');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const responseDiv = document.getElementById('response');
+    
+      let recognition;
+      let lastQuestion = '';
+    
+      image.addEventListener('click', () => {
+        image.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.play();
+    
+        if (recognition) {
+          recognition.stop();
+        }
+    
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+    
+        recognition.onresult = event => {
+          let transcript = '';
+    
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+              transcript += event.results[i][0].transcript;
+            }
+          }
+    
+          responseDiv.innerText = transcript;
+          respondToQuery(transcript);
+        };
+    
+        recognition.start();
+      });
+    
+      videoPlayer.addEventListener('click', () => {
+        image.style.display = 'block';
+        videoPlayer.style.display = 'none';
+        videoPlayer.pause();
+        videoPlayer.currentTime = 0;
+    
+        if (recognition) {
+          recognition.stop();
+          responseDiv.innerText = '';
+        }
+      });
+    
+      function respondToQuery(query) {
+        if (query !== lastQuestion) {
+            if (query.includes('hi') || query.includes('I need your help')) {
+              speak('Hello, how can I help you?');
+            } else if (query.includes('open navigation')) {
+              openNavigation();
+            }
+            else if (query.includes('open contacts')) {
+              openContacts();
+            }
+            else if (query.includes('open settings')) {
+              openSettings();
+            }
+            else if (query.includes('emergency')) {
+              openEmergency();
+            }
+  
+            lastQuestion = query;
+          }
+      }
+    
+      function speak(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        window.speechSynthesis.speak(utterance);   
+      }
+  
+      function openNavigation() {
+          window.location.href = '../Maps_Canvas_1/Maps_Canvas_1.html'; 
+        }
+        function openContacts() {
+          window.location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html'; 
+        }
+        function openSettings() {
+          window.location.href = '../Settings_Canvas_1/Settings_Canvas_1.html'; 
+        }
+        function openEmergency() {
+          window.location.href = '../Emergency_Canvas_1/Emergency_Canvas_1.html'; 
+        }
+      // Other functions
+    </script>
+    <script>
+      window.addEventListener('load', function() {
+        const emergencyButton = document.getElementById('emergencyButton');
+        emergencyButton.click();
+      });
+    </script>
+     <script>
+      window.addEventListener('DOMContentLoaded', (event) => {
+        const message = 'Are you experiencing an emergency?';
+
+        if ('speechSynthesis' in window) {
+          const speech = new SpeechSynthesisUtterance(message);
+          speech.lang = 'en-US';
+          window.speechSynthesis.speak(speech);
+        } else {
+          console.log('Speech synthesis is not supported in this browser.');
+        }
+      });
+
+      window.addEventListener('load', function() {
+  setTimeout(function() {
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = function(event) {
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          transcript += event.results[i][0].transcript;
+        }
+      }
+
+      if (transcript.toLowerCase().includes('yes')) {
+        yesButton.click();
+      } else if (transcript.toLowerCase().includes('no')) {
+        noButton.click();
+      }
+    };
+
+    recognition.start();
+  }, 1500);
+});
+
+    </script>
+    
+      <script>function updateTime() {
+        const currentDate = new Date();
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const dayOfWeek = daysOfWeek[currentDate.getDay()];
+      
+        document.getElementById('time').textContent = `${hours}:${minutes}`;
+        document.getElementById('date').textContent = `${year}-${month}-${day}`;
+        document.getElementById('day').textContent = dayOfWeek;
+      }
+      
+      // Update time every second
+      setInterval(updateTime, 1000);
+      
+      function onClick() {
+        location.href = '../Main_Canvas_1/Main_Canvas_1.html';
+      }
+      
+      function onClick_1() {
+        location.href = '../Maps_Canvas_1/Maps_Canvas_1.html';
+      }
+      
+      function onClick_2() {
+        location.href = '../Contacts_Canvas_1/Contacts_Canvas_1.html';
+      }
+      
+      function onClick_3() {
+        location.href = '../Settings_Canvas_1/Settings_Canvas_1.html';
+      }
+      
+      const emergencyButton = document.getElementById('emergencyButton');
+      const emergencyModal = document.getElementById('emergencyModal');
+      const noButton = document.getElementById('noButton');
+      const yesButton = document.getElementById('yesButton');
+      const countdownEl = document.getElementById('countdown');
+      const emergencyText = document.getElementById('emergencyText');
+      
+      let countdown;
+      
+      
+      emergencyButton.onclick = function() {
+        emergencyModal.style.display = 'block';
+        let timeLeft = 10;
+        countdownEl.textContent = timeLeft;
+        
+        countdown = setInterval(function() {
+          timeLeft--;
+          countdownEl.textContent = timeLeft;
+          if(timeLeft <= 0) {
+            clearInterval(countdown);
+            emergencyText.textContent = "Emergency contact has been called.";
+            noButton.style.display = 'none';
+            yesButton.style.display = 'none';
+            backButton.style.display = 'block';
+          }
+        }, 1000);
+      }
+      
+      noButton.onclick = function() {
+        emergencyModal.style.display = 'none';
+        clearInterval(countdown);
+      }
+      
+      const backButton = document.getElementById('backButton');
+      
+      // ...
+      
+      
+      yesButton.onclick = function() {
+        emergencyText.textContent = "Emergency contact has been called.";
+        noButton.style.display = 'none';
+        yesButton.style.display = 'none';
+        backButton.style.display = 'block'; // 显示返回按
+        clearInterval(countdown);
+      
+        const speechEmergencyContactCalled = new SpeechSynthesisUtterance("Emergency contact has been called.");
+        speechEmergencyContactCalled.lang = 'en-US';
+        window.speechSynthesis.speak(speechEmergencyContactCalled);
+      };
+      
+      backButton.onclick = function() {
+        emergencyModal.style.display = 'none';
+        noButton.style.display = 'block';
+        yesButton.style.display = 'block';
+        backButton.style.display = 'none'; // 隐藏返回按钮
+        emergencyText.textContent = "Do you have an emergency?";
+        clearInterval(countdown);
+      }
+      </script>
+  </body>
+</html>

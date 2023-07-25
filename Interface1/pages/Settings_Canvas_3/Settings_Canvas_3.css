@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/645d1ea45a7e3f0310298a17/64779f92744674001151b0a2/16855612473527413911.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    margin: 0 auto; /* 添加居中对齐的边距样式 */
+  }
+  
+  
+  .settings-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  
+  .settings-list li {
+    margin-bottom: 20px;
+  }
+  
+  .settings-list a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 25px;
+  }
+  
+  .settings-section {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  
+  .settings-section.active {
+    display: block;
+  }
+  
+  .settings-section h2 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  textarea {
+    width: 300px;
+    height: 100px;
+    resize: none;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  
